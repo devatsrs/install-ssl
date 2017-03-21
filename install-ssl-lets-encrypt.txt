@@ -1,0 +1,37 @@
+#installation
+#more detail https://certbot.eff.org/#centos6-apache
+
+
+wget https://dl.eff.org/certbot-auto
+chmod a+x certbot-auto
+
+#generate certificates
+
+./certbot-auto --apache certonly
+
+
+#create a config file with domain name.
+/etc/httpd/conf.d/domain.com.conf 
+
+#past following code and update domain and path 
+
+<VirtualHost *:443>
+	SSLEngine on
+
+	SSLCertificateFile /etc/letsencrypt/live/domain/cert.pem
+	SSLCertificateKeyFile /etc/letsencrypt/live/domain/privkey.pem
+	SSLCertificateChainFile /etc/letsencrypt/live/domain/chain.pem
+
+    ServerAlias domain
+	ServerName domain
+	
+	ServerAdmin webmaster@domain
+	DocumentRoot /var/www/html/domain/public
+	<Directory "/var/www/html/domain/public">
+		Allowoverride All
+		Options Indexes FollowSymLinks Includes ExecCGI
+		Order allow,deny
+		Allow from all
+	</Directory>
+	
+</VirtualHost>
